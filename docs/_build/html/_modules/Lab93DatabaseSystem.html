@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lab93DatabaseSystem &mdash; Lab93 Database System 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Lab93 Database System
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Lab93DatabaseSystem</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Lab93 Database System</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">Lab93DatabaseSystem</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for Lab93DatabaseSystem</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/bin/python3</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># Only import what we need from our base, just to keep it light.</span>
+<span class="kn">from</span> <span class="nn">sqlite3</span> <span class="kn">import</span> <span class="n">connect</span>
+
+<span class="c1"># Same with logging, only rename the members for readability.</span>
+<span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">getLogger</span><span class="p">,</span> <span class="n">exception</span>
+<span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">info</span> <span class="k">as</span> <span class="n">information</span>
+<span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">debug</span> <span class="k">as</span> <span class="n">debugging</span>
+
+
+<div class="viewcode-block" id="Lab93DatabaseSystem"><a class="viewcode-back" href="../Lab93DatabaseSystem.html#Lab93DatabaseSystem.Lab93DatabaseSystem">[docs]</a><span class="k">class</span> <span class="nc">Lab93DatabaseSystem</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span>
+                  <span class="n">database</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;./sqlite3.db&quot;</span><span class="p">,</span>
+                  <span class="n">interactive_mode</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span>  <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">getLogger</span><span class="p">();</span> <span class="n">information</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Initialized Lab-93 database system.&quot;</span>
+        <span class="p">)</span>
+        
+        <span class="n">debugging</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;Beginning constants definition&quot;</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sql</span> <span class="o">=</span> <span class="n">SQLite3_Statements</span><span class="p">(</span>
+            <span class="n">database</span>
+        <span class="p">)</span>
+
+
+<div class="viewcode-block" id="Lab93DatabaseSystem.databaseConnection"><a class="viewcode-back" href="../Lab93DatabaseSystem.html#Lab93DatabaseSystem.Lab93DatabaseSystem.databaseConnection">[docs]</a>    <span class="k">class</span> <span class="nc">databaseConnection</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span>
+                      <span class="n">database</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;./.sqlite3.db&quot;</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+            <span class="n">getLogger</span><span class="p">();</span> <span class="n">information</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Establishing database connection with </span><span class="si">{</span><span class="n">database</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+            <span class="n">debugging</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Attempting connection with sqlite3 database file.&quot;</span>
+            <span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span>
+                    <span class="n">database</span>
+                <span class="p">);</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span>\
+                                     <span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+                <span class="n">debugging</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Database connection successful.&quot;</span>
+                <span class="p">)</span>
+            
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+                <span class="n">exception</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;There was an issue connecting to the </span><span class="si">{</span><span class="n">database</span><span class="si">}</span><span class="s2"> database;</span><span class="se">\n</span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">);</span> <span class="k">return</span> <span class="n">error</span></div>
+
+
+<div class="viewcode-block" id="Lab93DatabaseSystem.SQLite3_Statements"><a class="viewcode-back" href="../Lab93DatabaseSystem.html#Lab93DatabaseSystem.Lab93DatabaseSystem.SQLite3_Statements">[docs]</a>    <span class="k">class</span> <span class="nc">SQLite3_Statements</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The SQLite3_Statements class offers a library of pre-defined</span>
+<span class="sd">        statements that are easily accessed by a suite of functions</span>
+<span class="sd">        co-relating with those statements.</span>
+
+<span class="sd">        The class object accepts a `database` string that should be a valid</span>
+<span class="sd">        filepath to an sqlite3.db file.  After initialization, member methods</span>
+<span class="sd">        can be called at-will in your code to provide a simple API for database</span>
+<span class="sd">        functionality.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span>
+                      <span class="n">database</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;./test.db&quot;</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<span class="w">            </span><span class="sd">&#39;&#39;&#39; (Linux) Filepath to an sqlite3.db file. &#39;&#39;&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">database</span> <span class="o">=</span> <span class="n">database</span>
+
+<span class="w">            </span><span class="sd">&#39;&#39;&#39; Master dictionary of various sqlite3 statements. &#39;&#39;&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">statements</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="c1"># Select a specific column from a row based on another column.</span>
+                <span class="s1">&#39;queryCompareColumns&#39;</span><span class="p">:</span> <span class="s2">&quot;SELECT </span><span class="si">{}</span><span class="s2"> FROM </span><span class="si">{}</span><span class="s2"> WHERE  </span><span class="si">{}</span><span class="s2">=&#39;</span><span class="si">{}</span><span class="s2">&#39;;&quot;</span><span class="p">,</span>
+
+                <span class="c1"># Add a new column to the database.</span>
+                <span class="s1">&#39;createNewColumn&#39;</span><span class="p">:</span> <span class="s2">&quot;ALTER TABLE </span><span class="si">{}</span><span class="s2"> ADD </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">,</span>
+            
+                <span class="c1"># Create a new new table within the database.</span>
+                <span class="s1">&#39;createNewTable&#39;</span><span class="p">:</span> <span class="s2">&quot;CREATE TABLE IF NOT EXISTS </span><span class="si">{}</span><span class="s2">(</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> PRIMARY KEY);&quot;</span><span class="p">,</span>
+
+                <span class="c1"># Check if a specific table exists within the database.</span>
+                <span class="s1">&#39;queryTableExistence&#39;</span><span class="p">:</span> <span class="s2">&quot;SELECT COUNT(name) FROM sqlite_master WHERE type=&#39;table&#39; AND name=&#39;</span><span class="si">{}</span><span class="s2">&#39;;&quot;</span><span class="p">,</span>
+
+                <span class="c1"># Check a given table for a specific column.</span>
+                <span class="s1">&#39;queryColumnExistence&#39;</span><span class="p">:</span> <span class="s2">&quot;SELECT COUNT(*) FROM pragma_table_info(&#39;</span><span class="si">{}</span><span class="s2">&#39;) WHERE name=&#39;</span><span class="si">{}</span><span class="s2">&#39;;&quot;</span><span class="p">,</span>
+            <span class="p">}</span>
+
+
+<div class="viewcode-block" id="Lab93DatabaseSystem.SQLite3_Statements.newColumn"><a class="viewcode-back" href="../Lab93DatabaseSystem.html#Lab93DatabaseSystem.Lab93DatabaseSystem.SQLite3_Statements.newColumn">[docs]</a>        <span class="k">def</span> <span class="nf">newColumn</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span>
+                       <span class="n">table</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;test_table_one&quot;</span><span class="p">,</span>
+                       <span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;test_column_one&quot;</span><span class="p">,</span>
+                       <span class="n">column_type</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;UNIQUE PRIMARY TEXT&quot;</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            SQLite3_Statements.newColumn will create a new header within a table of your choosing.</span>
+<span class="sd">            It accepts three strings; `table`, `column`, and `column_type`; where `table` is the</span>
+<span class="sd">            target to be altered, `column` is the label applied to the header, and `column_type`</span>
+<span class="sd">            are as many (supposedly valid) sQLite3 datatypes as you desire.</span>
+
+<span class="sd">            Changes made are saved on a successful exit.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+
+            <span class="n">db</span> <span class="o">=</span> <span class="n">databaseConnection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">)</span>
+
+            <span class="n">db</span><span class="o">.</span><span class="n">cursor</span>\
+              <span class="o">.</span><span class="n">execute</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">statements</span><span class="p">[</span><span class="s1">&#39;createNewColumn&#39;</span><span class="p">]</span>\
+                            <span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="n">table</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>\
+                                          <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">),</span>
+
+                                     <span class="n">column</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>\
+                                           <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">),</span>
+
+                                     <span class="n">column_type</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>       <span class="p">)</span> <span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">db</span><span class="o">.</span><span class="n">connection</span>\
+                     <span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Lab93DatabaseSystem.SQLite3_Statements.compareColumns"><a class="viewcode-back" href="../Lab93DatabaseSystem.html#Lab93DatabaseSystem.Lab93DatabaseSystem.SQLite3_Statements.compareColumns">[docs]</a>        <span class="k">def</span> <span class="nf">compareColumns</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span>
+                            <span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;test_column_one&quot;</span><span class="p">,</span>
+                            <span class="n">table</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;test_table_one&quot;</span><span class="p">,</span>
+                            <span class="n">comparator</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;test_column_two&quot;</span><span class="p">,</span>
+                            <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;test_value_two&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            SQLite3_Statements.compareColumns describes an easy method to pull a specific</span>
+<span class="sd">            value from any given line based on a known value within said line.  The exact</span>
+<span class="sd">            logic behind the query goes like: &quot;SELECT column FROM table WHERE comparator=value&quot;.</span>
+
+<span class="sd">            All arguments are to be given as strings; where `column` describes what to select</span>
+<span class="sd">            from the `table`, based on a secondary column `comparator` containing the equivalent</span>
+<span class="sd">            of `value`.</span>
+
+<span class="sd">            The contents of the `column` search results are then returned to the caller</span>
+<span class="sd">            as a string.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="n">databaseConnection</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">database</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">cursor</span>\
+             <span class="o">.</span><span class="n">execute</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">statements</span><span class="p">[</span><span class="s1">&#39;queryCompareColumns&#39;</span><span class="p">]</span>\
+                           <span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="n">column</span><span class="p">,</span>
+                                    <span class="n">table</span><span class="p">,</span>
+                                    <span class="n">comparator</span><span class="p">,</span>
+                                    <span class="n">value</span>       <span class="p">)</span>
+                                                               <span class="p">)</span>\
+             <span class="o">.</span><span class="n">fetchall</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="Lab93DatabaseSystem.SQLite3_Statements.newTable"><a class="viewcode-back" href="../Lab93DatabaseSystem.html#Lab93DatabaseSystem.Lab93DatabaseSystem.SQLite3_Statements.newTable">[docs]</a>        <span class="k">def</span> <span class="nf">newTable</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span>
+                      <span class="n">table</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;test_table_one&quot;</span><span class="p">,</span>
+                      <span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;test_column_one&quot;</span><span class="p">,</span>
+                      <span class="n">column_type</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;UNIQUE TEXT&quot;</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            SQLite3_Statements.newTable will create a new `table` initialized with a header</span>
+<span class="sd">            labeled as `column`; any extra datatypes can be described by `column_type`, but</span>
+<span class="sd">            the statement includes the PRIMARY KEY types by default.</span>
+
+<span class="sd">            Changes made to the table are commited upon return.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+
+<span class="w">            </span><span class="sd">&#39;&#39;&#39; Establish database connection. &#39;&#39;&#39;</span>
+            <span class="n">db</span> <span class="o">=</span> <span class="n">databaseConnection</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">database</span><span class="p">)</span>
+
+<span class="w">            </span><span class="sd">&#39;&#39;&#39; Format command string with argument input. &#39;&#39;&#39;</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">cursor</span>\
+              <span class="o">.</span><span class="n">execute</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">statements</span><span class="p">[</span><span class="s1">&#39;createNewTable&#39;</span><span class="p">]</span>\
+                            <span class="o">.</span><span class="n">format</span> <span class="p">(</span> <span class="n">table</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>\
+                                           <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">),</span>
+
+                                      <span class="n">column</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>\
+                                            <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">),</span>
+
+                                      <span class="n">column_type</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>       <span class="p">)</span> <span class="p">)</span>
+
+<span class="w">            </span><span class="sd">&#39;&#39;&#39; Save your work. &#39;&#39;&#39;</span>
+            <span class="k">return</span> <span class="n">db</span><span class="o">.</span><span class="n">connection</span>\
+                     <span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Lab93DatabaseSystem.SQLite3_Statements.checkTable"><a class="viewcode-back" href="../Lab93DatabaseSystem.html#Lab93DatabaseSystem.Lab93DatabaseSystem.SQLite3_Statements.checkTable">[docs]</a>        <span class="k">def</span> <span class="nf">checkTable</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span>
+                        <span class="c1"># A collection of records to be found.</span>
+                        <span class="n">table</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;test_table_one&quot;</span>            <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            SQLite3_Statements.checkTable will query the master record for the existence of</span>
+<span class="sd">            a `table` by the same name as the given argument.</span>
+
+<span class="sd">            The search will return an integer; where anything over zero(0) describes a</span>
+<span class="sd">            successful match.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="n">databaseConnection</span><span class="o">.</span><span class="n">cursor</span>\
+                                     <span class="o">.</span><span class="n">execute</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">statements</span><span class="p">[</span><span class="s1">&#39;queryTableExistence&#39;</span><span class="p">]</span>\
+                                                   <span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="n">table</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="p">)</span>          <span class="p">)</span>\
+                                     <span class="o">.</span><span class="n">fetchall</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="Lab93DatabaseSystem.SQLite3_Statements.checkColumn"><a class="viewcode-back" href="../Lab93DatabaseSystem.html#Lab93DatabaseSystem.Lab93DatabaseSystem.SQLite3_Statements.checkColumn">[docs]</a>        <span class="k">def</span> <span class="nf">checkColumn</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span>
+                         <span class="c1"># Record collection being searched.</span>
+                         <span class="n">table</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;test_table_one&quot;</span><span class="p">,</span>
+                         <span class="c1"># Column header being searched for.</span>
+                         <span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;test_column_one&quot;</span>       <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            SQLite3_Statements.checkColumn queries a given `table` for the presence of a header</span>
+<span class="sd">            labeled `column`; where any return value over zero(0) indicates a match.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+
+            <span class="k">return</span> <span class="n">databaseConnection</span><span class="o">.</span><span class="n">cursor</span>\
+                                     <span class="o">.</span><span class="n">execute</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">statements</span><span class="p">[</span><span class="s1">&#39;queryColumnExistence&#39;</span><span class="p">]</span>\
+                                                   <span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="n">table</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span>
+                                                            <span class="n">column</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="p">)</span>            <span class="p">)</span>\
+                                     <span class="o">.</span><span class="n">fetchall</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span></div></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Hunter Dale.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
