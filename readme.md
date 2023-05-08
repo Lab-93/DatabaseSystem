@@ -10,7 +10,13 @@ python3 -m pip install --upgrade Lab93DatabaseSystem
 ```
 
 ## Usage
-### Interactive CLI-Mode
+### Interactivity Mode
+The dbsystem package provides a graphical environment for viewing, managing, and otherwise interacting with any given database.
+The database manager consists of a viewing system for the selected ```.db``` file, which is selected at startup.
+Once a database is selected the view introduces a selection of tabs listing each table within the file; each view consists of the the entire contents of said table.
+Below the workspace window is a persistent panel describing a form meant to guide the user to making an appropriate command.
+Queries and functions can be selected via a drop-down menu that actively alters the rest of the form to fit the usage scenario. ```For example, it wouldn't make sense to include a field for a second column with a function that only cares about a single column; adjust the viewpoint to match this worldview!```
+
 ### Scripting Mode
 To use the api with your python scripts the package needs to be imported and initialized.
 To do so, one need simply add the following to their python file:
