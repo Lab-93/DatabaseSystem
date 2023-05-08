@@ -1,0 +1,306 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lab93DatabaseSystem.submodules.DatabaseAPI.SQLite3 &#8212; Lab93DatabaseSystem 0.0.2 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for Lab93DatabaseSystem.submodules.DatabaseAPI.SQLite3</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/bin/python3</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">The SQLite3_Statements class offers a library of pre-defined SQL statements,</span>
+<span class="sd">indexed and stored as a human-readable dictionary.</span>
+
+<span class="sd">The class object accepts a `database` string that should be a valid</span>
+<span class="sd">filepath to an sqlite3.db file.  After initialization, member methods</span>
+<span class="sd">can be called at-will in your code to provide a simple API for database</span>
+<span class="sd">functionality.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">from</span> <span class="nn">sqlite3</span> <span class="kn">import</span> <span class="n">connect</span>
+
+
+<div class="viewcode-block" id="databaseConnection"><a class="viewcode-back" href="../../../../Lab93DatabaseSystem.submodules.DatabaseAPI.html#Lab93DatabaseSystem.submodules.DatabaseAPI.SQLite3.databaseConnection">[docs]</a><span class="k">class</span> <span class="nc">databaseConnection</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The SQLite3.databaseConnection object is an internal class used by the</span>
+<span class="sd">    functionality suite used for abstracting away overhead involved with using</span>
+<span class="sd">    the built-in sqlite3 library.</span>
+
+<span class="sd">    Given a `database` string, which is a valid filepath pointing to a .db file,</span>
+<span class="sd">    the member objects databaseConnection.connection and</span>
+<span class="sd">    databaseConnection.cursor are accessibile from a freshly created thread.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span>
+                  <span class="n">database</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;./.sqlite3.db&quot;</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span>
+                <span class="n">database</span>
+            <span class="p">);</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span>\
+                                 <span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">error</span></div>
+
+
+<span class="sd">&#39;&#39;&#39; Master dictionary of various sqlite3 statements. &#39;&#39;&#39;</span>
+<span class="n">statements</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1"># Select a specific column from a row based on another column.</span>
+    <span class="s1">&#39;queryCompareColumns&#39;</span><span class="p">:</span> <span class="s2">&quot;SELECT </span><span class="si">{}</span><span class="s2"> FROM </span><span class="si">{}</span><span class="s2"> WHERE  </span><span class="si">{}</span><span class="s2">=&#39;</span><span class="si">{}</span><span class="s2">&#39;;&quot;</span><span class="p">,</span>
+
+    <span class="c1"># Add a new column to the database.</span>
+    <span class="s1">&#39;createNewColumn&#39;</span><span class="p">:</span> <span class="s2">&quot;ALTER TABLE </span><span class="si">{}</span><span class="s2"> ADD </span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">;&quot;</span><span class="p">,</span>
+        
+    <span class="c1"># Create a new new table within the database.</span>
+    <span class="s1">&#39;createNewTable&#39;</span><span class="p">:</span> <span class="s2">&quot;CREATE TABLE IF NOT EXISTS </span><span class="si">{}</span><span class="s2">(</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2"> PRIMARY KEY);&quot;</span><span class="p">,</span>
+
+    <span class="c1"># Collect everything from a given table.</span>
+    <span class="s1">&#39;queryTableData&#39;</span><span class="p">:</span> <span class="s2">&quot;SELECT * FROM </span><span class="si">{}</span><span class="s2">;&quot;</span><span class="p">,</span>
+
+    <span class="c1"># Check if a specific table exists within the database.</span>
+    <span class="s1">&#39;queryTableExistence&#39;</span><span class="p">:</span> <span class="s2">&quot;SELECT COUNT(name) FROM sqlite_master WHERE type=&#39;table&#39; AND name=&#39;</span><span class="si">{}</span><span class="s2">&#39;;&quot;</span><span class="p">,</span>
+
+    <span class="c1"># Check a given table for a specific column.</span>
+    <span class="s1">&#39;queryColumnExistence&#39;</span><span class="p">:</span> <span class="s2">&quot;SELECT COUNT(*) FROM pragma_table_info(&#39;</span><span class="si">{}</span><span class="s2">&#39;) WHERE name=&#39;</span><span class="si">{}</span><span class="s2">&#39;;&quot;</span><span class="p">,</span>
+
+    <span class="c1"># Enumerate a list of tables within the master record.</span>
+    <span class="s1">&#39;queryTableList&#39;</span><span class="p">:</span> <span class="s2">&quot;SELECT name FROM sqlite_schema WHERE type=&#39;table&#39; ORDER BY name;&quot;</span><span class="p">,</span>
+
+    <span class="c1"># Curate a list of headers for a given table.</span>
+    <span class="s1">&#39;queryHeaderList&#39;</span><span class="p">:</span> <span class="s2">&quot;SELECT name FROM sqlite_master WHERE type=&#39;table&#39;&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="newColumn"><a class="viewcode-back" href="../../../../Lab93DatabaseSystem.submodules.DatabaseAPI.html#Lab93DatabaseSystem.submodules.DatabaseAPI.SQLite3.newColumn">[docs]</a><span class="k">def</span> <span class="nf">newColumn</span><span class="p">(</span> <span class="n">database</span><span class="p">,</span>
+               <span class="n">table</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;test_table_one&quot;</span><span class="p">,</span>
+               <span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;test_column_one&quot;</span><span class="p">,</span>
+               <span class="n">column_type</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;UNIQUE PRIMARY TEXT&quot;</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    SQLite3_Statements.newColumn will create a new header within a table of your choosing.</span>
+<span class="sd">    It accepts three strings; `table`, `column`, and `column_type`; where `table` is the</span>
+<span class="sd">    target to be altered, `column` is the label applied to the header, and `column_type`</span>
+<span class="sd">    are as many (supposedly valid) sQLite3 datatypes as you desire.</span>
+
+<span class="sd">    Changes made are saved on a successful exit.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">database</span> <span class="o">=</span> <span class="n">databaseConnection</span><span class="p">(</span><span class="n">database</span><span class="p">)</span>
+
+    <span class="n">database</span><span class="o">.</span><span class="n">cursor</span>\
+            <span class="o">.</span><span class="n">execute</span><span class="p">(</span> <span class="n">statements</span><span class="p">[</span><span class="s1">&#39;createNewColumn&#39;</span><span class="p">]</span>\
+                          <span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="n">table</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>\
+                                        <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">),</span>
+
+                                   <span class="n">column</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>\
+                                         <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">),</span>
+
+                                   <span class="n">column_type</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>       <span class="p">)</span> <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">database</span><span class="o">.</span><span class="n">connection</span>\
+                   <span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="compareColumns"><a class="viewcode-back" href="../../../../Lab93DatabaseSystem.submodules.DatabaseAPI.html#Lab93DatabaseSystem.submodules.DatabaseAPI.SQLite3.compareColumns">[docs]</a><span class="k">def</span> <span class="nf">compareColumns</span><span class="p">(</span> <span class="n">database</span><span class="p">,</span>
+                    <span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;test_column_one&quot;</span><span class="p">,</span>
+                    <span class="n">table</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;test_table_one&quot;</span><span class="p">,</span>
+                    <span class="n">comparator</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;test_column_two&quot;</span><span class="p">,</span>
+                    <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;test_value_two&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    SQLite3_Statements.compareColumns describes an easy method to pull a specific</span>
+<span class="sd">    value from any given line based on a known value within said line.  The exact</span>
+<span class="sd">    logic behind the query goes like: &quot;SELECT column FROM table WHERE comparator=value&quot;.</span>
+
+<span class="sd">    All arguments are to be given as strings; where `column` describes what to select</span>
+<span class="sd">    from the `table`, based on a secondary column `comparator` containing the equivalent</span>
+<span class="sd">    of `value`.</span>
+
+<span class="sd">    The contents of the `column` search results are then returned to the caller</span>
+<span class="sd">    as a string.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">database</span> <span class="o">=</span> <span class="n">databaseConnection</span><span class="p">(</span><span class="n">database</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">database</span><span class="o">.</span><span class="n">cursor</span>\
+                   <span class="o">.</span><span class="n">execute</span><span class="p">(</span> <span class="n">statements</span><span class="p">[</span><span class="s1">&#39;queryCompareColumns&#39;</span><span class="p">]</span>\
+                                 <span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="n">column</span><span class="p">,</span>
+                                          <span class="n">table</span><span class="p">,</span>
+                                          <span class="n">comparator</span><span class="p">,</span>
+                                          <span class="n">value</span>       <span class="p">)</span>             <span class="p">)</span>\
+                   <span class="o">.</span><span class="n">fetchall</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="newTable"><a class="viewcode-back" href="../../../../Lab93DatabaseSystem.submodules.DatabaseAPI.html#Lab93DatabaseSystem.submodules.DatabaseAPI.SQLite3.newTable">[docs]</a><span class="k">def</span> <span class="nf">newTable</span><span class="p">(</span> <span class="n">database</span><span class="p">,</span>
+              <span class="n">table</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;test_table_one&quot;</span><span class="p">,</span>
+              <span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;test_column_one&quot;</span><span class="p">,</span>
+              <span class="n">column_type</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;UNIQUE TEXT&quot;</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    SQLite3_Statements.newTable will create a new `table` initialized with a header</span>
+<span class="sd">    labeled as `column`; any extra datatypes can be described by `column_type`, but</span>
+<span class="sd">    the statement includes the PRIMARY KEY types by default.</span>
+
+<span class="sd">    Changes made to the table are commited upon return.</span>
+
+
+<span class="sd">    Usage Example:</span>
+
+<span class="sd">        SQLite3.newTable( DATABASE,</span>
+<span class="sd">                          table=&quot;credentials&quot;,</span>
+<span class="sd">                          column=&quot;username&quot;,</span>
+<span class="sd">                          column_type=&quot;TEXT&quot;   )</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<span class="w">    </span><span class="sd">&#39;&#39;&#39; Format command string with argument input. &#39;&#39;&#39;</span>
+    <span class="n">database</span> <span class="o">=</span> <span class="n">databaseConnection</span><span class="p">(</span><span class="n">database</span><span class="p">)</span>
+    <span class="n">database</span><span class="o">.</span><span class="n">cursor</span>\
+            <span class="o">.</span><span class="n">execute</span><span class="p">(</span> <span class="n">statements</span><span class="p">[</span><span class="s1">&#39;createNewTable&#39;</span><span class="p">]</span>\
+                          <span class="o">.</span><span class="n">format</span> <span class="p">(</span> <span class="n">table</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>\
+                                         <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">),</span>
+
+                                    <span class="n">column</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>\
+                                          <span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">),</span>
+
+                                    <span class="n">column_type</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>       <span class="p">)</span> <span class="p">)</span>
+
+<span class="w">    </span><span class="sd">&#39;&#39;&#39; Save your work. &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">database</span><span class="o">.</span><span class="n">connection</span>\
+                   <span class="o">.</span><span class="n">commit</span><span class="p">()</span></div>
+
+
+<span class="c1"># TODO: Define list tables.</span>
+<div class="viewcode-block" id="listTables"><a class="viewcode-back" href="../../../../Lab93DatabaseSystem.submodules.DatabaseAPI.html#Lab93DatabaseSystem.submodules.DatabaseAPI.SQLite3.listTables">[docs]</a><span class="k">def</span> <span class="nf">listTables</span><span class="p">(</span> <span class="n">database</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Enumerates a list of every table in the database.  Fairly straightforward;</span>
+<span class="sd">    here&#39;s an example.</span>
+
+<span class="sd">        SQLite3.listTables( SQLite3.databaseConnection(&quot;./sqlite.db&quot;) )</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">database</span> <span class="o">=</span> <span class="n">databaseConnection</span><span class="p">(</span><span class="n">database</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">database</span><span class="o">.</span><span class="n">cursor</span>\
+                                 <span class="o">.</span><span class="n">execute</span><span class="p">(</span> <span class="n">statements</span><span class="p">[</span><span class="s1">&#39;queryTableList&#39;</span><span class="p">]</span> <span class="p">)</span>\
+                                 <span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+    <span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="checkTable"><a class="viewcode-back" href="../../../../Lab93DatabaseSystem.submodules.DatabaseAPI.html#Lab93DatabaseSystem.submodules.DatabaseAPI.SQLite3.checkTable">[docs]</a><span class="k">def</span> <span class="nf">checkTable</span><span class="p">(</span> <span class="n">database</span><span class="p">,</span>
+                <span class="n">table</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;test_table_one&quot;</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    SQLite3_Statements.checkTable will query the master record for the existence of</span>
+<span class="sd">    a `table` by the same name as the given argument.</span>
+
+<span class="sd">    The search will return an integer; where anything over zero(0) describes a</span>
+<span class="sd">    successful match.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">database</span> <span class="o">=</span> <span class="n">databaseConnection</span><span class="p">(</span><span class="n">database</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">database</span><span class="o">.</span><span class="n">cursor</span>\
+                   <span class="o">.</span><span class="n">execute</span><span class="p">(</span> <span class="n">statements</span><span class="p">[</span><span class="s1">&#39;queryTableExistence&#39;</span><span class="p">]</span>\
+                                 <span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="n">table</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="p">)</span>          <span class="p">)</span>\
+                   <span class="o">.</span><span class="n">fetchall</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="checkColumn"><a class="viewcode-back" href="../../../../Lab93DatabaseSystem.submodules.DatabaseAPI.html#Lab93DatabaseSystem.submodules.DatabaseAPI.SQLite3.checkColumn">[docs]</a><span class="k">def</span> <span class="nf">checkColumn</span><span class="p">(</span> <span class="n">database</span><span class="p">,</span>
+                 <span class="n">table</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;test_table_one&quot;</span><span class="p">,</span>
+                 <span class="n">column</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="s2">&quot;test_column_one&quot;</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    SQLite3_Statements.checkColumn queries a given `table` for the presence of a header</span>
+<span class="sd">    labeled `column`; where any return value over zero(0) indicates a match.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">database</span> <span class="o">=</span> <span class="n">databaseConnection</span><span class="p">(</span><span class="n">database</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">database</span><span class="o">.</span><span class="n">cursor</span>\
+                   <span class="o">.</span><span class="n">execute</span><span class="p">(</span> <span class="n">statements</span><span class="p">[</span><span class="s1">&#39;queryColumnExistence&#39;</span><span class="p">]</span>\
+                                 <span class="o">.</span><span class="n">format</span><span class="p">(</span> <span class="n">table</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span>
+                                          <span class="n">column</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="p">)</span>            <span class="p">)</span>\
+                   <span class="o">.</span><span class="n">fetchall</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">Lab93DatabaseSystem</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modules.html">Lab93DatabaseSystem</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  <li><a href="../../../Lab93DatabaseSystem.html">Lab93DatabaseSystem</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, Hunter Dale.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

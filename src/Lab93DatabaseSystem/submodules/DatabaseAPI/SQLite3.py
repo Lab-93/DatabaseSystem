@@ -1,22 +1,9 @@
 #!/bin/python3
 """
- _          _           ___ _____   ____   ___  _     _ _       _____ 
-| |    __ _| |__       / _ \___ /  / ___| / _ \| |   (_) |_ ___|___ / 
-| |   / _` | '_ \ ____| (_) ||_ \  \___ \| | | | |   | | __/ _ \ |_ \ 
-| |__| (_| | |_) |_____\__, |__) |  ___) | |_| | |___| | ||  __/___) |
-|_____\__,_|_.__/        /_/____/  |____/ \__\_\_____|_|\__\___|____/ 
-                                                                      
- ___                 _                           _        _   _             
-|_ _|_ __ ___  _ __ | | ___ _ __ ___   ___ _ __ | |_ __ _| |_(_) ___  _ __  
- | || '_ ` _ \| '_ \| |/ _ \ '_ ` _ \ / _ \ '_ \| __/ _` | __| |/ _ \| '_ \ 
- | || | | | | | |_) | |  __/ | | | | |  __/ | | | || (_| | |_| | (_) | | | |
-|___|_| |_| |_| .__/|_|\___|_| |_| |_|\___|_| |_|\__\__,_|\__|_|\___/|_| |_|
-              |_|
-    The SQLite3_Statements class offers a library of pre-defined
-statements that are easily accessed by a suite of functions
-corelating with those statements.
+The SQLite3_Statements class offers a library of pre-defined SQL statements,
+indexed and stored as a human-readable dictionary.
 
-    The class object accepts a `database` string that should be a valid
+The class object accepts a `database` string that should be a valid
 filepath to an sqlite3.db file.  After initialization, member methods
 can be called at-will in your code to provide a simple API for database
 functionality.
@@ -28,15 +15,13 @@ from sqlite3 import connect
 
 class databaseConnection:
     """
-    The databaseConnection class is a throw-away intended
-    to abstract away the boiler-plate code involved with setting up the connection
-    with the database.
+    The SQLite3.databaseConnection object is an internal class used by the
+    functionality suite used for abstracting away overhead involved with using
+    the built-in sqlite3 library.
 
     Given a `database` string, which is a valid filepath pointing to a .db file,
-    the member objects databaseConnection.connection and databaseConnection.cursor
-    are accessibile from a freshly created thread.
-
-    All access attempts are logged by the caller.
+    the member objects databaseConnection.connection and
+    databaseConnection.cursor are accessibile from a freshly created thread.
     """
 
     def __init__( self,

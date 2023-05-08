@@ -1,16 +1,13 @@
 Lab93DatabaseSystem package
 ===========================
 
-Submodules
-----------
+Subpackages
+-----------
 
-Lab93DatabaseSystem.Lab93DatabaseSystem module
-----------------------------------------------
+.. toctree::
+   :maxdepth: 4
 
-.. automodule:: Lab93DatabaseSystem.Lab93DatabaseSystem
-   :members:
-   :undoc-members:
-   :show-inheritance:
+   Lab93DatabaseSystem.submodules
 
 Module contents
 ---------------
