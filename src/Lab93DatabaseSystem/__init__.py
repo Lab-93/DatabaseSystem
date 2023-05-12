@@ -125,6 +125,3 @@ def buildAdministratorDatabase( database: str="./sqlite3.db", **config ):
                                    column_type=column_type, ); print(
                     f"    --{str(column).title()} column created."
                 )
-
-if __name__ == "__main__":
-    buildAdministratorDatabase()
