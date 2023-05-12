@@ -4,12 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "Lab93DatabaseSystem"
-version = "0.0.2"
+version = "0.0.4"
 authors = [
   { name="Hunter Dale", email="hunter@guyyatsu.me" },
 ]
 
-description = "An API for interfacing with SQLite3 databases from the command line."
+description = "An API for object persistence scriptability."
 readme = "readme.md"
 requires-python = ">=3.10"
 classifiers = [

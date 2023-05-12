@@ -1,7 +1,7 @@
 Metadata-Version: 2.1
 Name: Lab93DatabaseSystem
-Version: 0.0.2
-Summary: An API for interfacing with SQLite3 databases from the command line.
+Version: 0.0.4
+Summary: An API for object persistence scriptability.
 Author-email: Hunter Dale <hunter@guyyatsu.me>
 Project-URL: Homepage, https://github.com/guyyatsu/Lab93-Database-System
 Project-URL: Bug Tracker, https://github.com/guyyatsu/Lab93-Database-System/issues
