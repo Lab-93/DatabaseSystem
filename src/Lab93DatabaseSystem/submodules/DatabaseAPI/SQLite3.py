@@ -62,6 +62,11 @@ statements = {
 
     # Curate a list of headers for a given table.
     'queryHeaderList': "SELECT name FROM sqlite_master WHERE type='table'",
+
+    # Add a new row to a specific table.
+    'createNewUniqueRow': "INSERT OR IGNORE INTO {}({}) VALUES({});",
+
+    'querySelectRow': "SELECT * FROM {} WHERE {}='{}';"
 }
 
 
@@ -202,3 +207,35 @@ def checkColumn( database,
                                  .format( table.lower(),
                                           column.lower() )            )\
                    .fetchall()[0][0]
+
+# NOTE: New function for version 0.0.4
+# TODO: This should actually be a querySpecificRow.
+def selectRow( database,
+              table,
+              row,
+              value ):
+    database = databaseConnection(database)
+    return database.cursor\
+                   .execute( statements['querySelectRow']\
+                                 .format( table.lower(),
+                                          row.lower(),
+                                          value         )     )\
+                   .fetchall()
+
+
+def new_uniqueRow( database,
+                   table: str="test_table_one",
+                   columns: str="test_column_one, test_column_two",
+                   values: str="test_value_one, test_value_two" ):
+    """
+    """
+
+    database = databaseConnection(database)
+    database.cursor\
+            .execute( statements['createNewUniqueRow']\
+                          .format( table.lower(),
+                                   columns.lower(),
+                                   values.lower() )  )
+
+    return database.connection\
+                   .commit()
