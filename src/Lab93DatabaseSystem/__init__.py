@@ -70,6 +70,8 @@ def buildAdministratorDatabase( database: str="./sqlite3.db", **config ):
                                               "website":       "TEXT",
                                             },
                                },
+                  "income": {},
+                  "hours": {},
                  }
 
     # Iterate through every top-level key and validate it's existence.
@@ -126,3 +128,16 @@ def buildAdministratorDatabase( database: str="./sqlite3.db", **config ):
                                    column_type=column_type, ); print(
                     f"    --{str(column).title()} column created."
                 )
+
+def populateAdministratorDatabase( database: str="./sqlite3.db",
+                                   keyfile:  str="./keyfile.key" ):
+
+    while True:
+        username = str(input(f"Type the name of the user to update credentials for: "))
+        credentials_entry = SQLite3.selectRow( database,
+                                                column='*',
+                                                table='credentials',
+                                                header='username',
+                                                value=username       )[0]
+        if len( credentials_entry ) > 0: pass
+
