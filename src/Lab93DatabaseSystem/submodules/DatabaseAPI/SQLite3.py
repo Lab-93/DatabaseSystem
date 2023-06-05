@@ -11,6 +11,9 @@ functionality.
 
 
 from sqlite3 import connect
+from Lab93Cryptogram import CryptographyMethodsAPI as cryptogram
+
+
 
 
 class databaseConnection:

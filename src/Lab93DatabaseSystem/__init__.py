@@ -26,6 +26,7 @@ schema.
 
 ''' In-House framework for interacting with database objects. '''
 from .submodules.DatabaseAPI import SQLite3
+from Lab93Cryptogram import CryptographyMethodsAPI
 
 
 def buildAdministratorDatabase( database: str="./sqlite3.db", **config ):
