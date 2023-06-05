@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "Lab93DatabaseSystem"
-version = "0.0.4"
+version = "0.0.6"
 authors = [
   { name="Hunter Dale", email="hunter@guyyatsu.me" },
 ]
@@ -19,5 +19,5 @@ classifiers = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/guyyatsu/Lab93-Database-System"
-"Bug Tracker" = "https://github.com/guyyatsu/Lab93-Database-System/issues"
+"Homepage" = "https://github.com/guyyatsu/Lab93-DatabaseSystem"
+"Bug Tracker" = "https://github.com/guyyatsu/Lab93-DatabaseSystem/issues"
